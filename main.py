@@ -1,6 +1,8 @@
 from tkinter import *
+from tkinter import messagebox
 import pandas
 import random
+import os
 
 BACKGROUND_COLOR = "#B1DDC6"
 
@@ -21,6 +23,7 @@ def right():
     pandas.DataFrame.from_records(to_learn).to_csv("data/words_to_learn.csv", index=False)
     next_card()
 
+
 # -- next card func --
 after_id = None
 current_card = {}
@@ -30,7 +33,13 @@ def next_card():
     global current_card, after_id
     if after_id:
         window.after_cancel(after_id)
-    current_card = random.choice(to_learn)
+    try:
+        current_card = random.choice(to_learn)
+    except IndexError:
+        os.remove("data/words_to_learn.csv")
+        messagebox.showinfo(title="Good job!", message="Congratulations you know all words!")
+        window.destroy()
+
     canvas.itemconfig(card_front, image=card_front_img)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_card["French"], fill="black")
