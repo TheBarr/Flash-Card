@@ -5,8 +5,21 @@ import random
 BACKGROUND_COLOR = "#B1DDC6"
 
 # --reding csv--
-data = pandas.read_csv("data/french_words.csv")
-to_learn = data.to_dict(orient="records")
+
+try:
+    data = pandas.read_csv("data/words_to_learn.csv")
+except FileNotFoundError:
+    data = pandas.read_csv("data/french_words.csv")
+finally:
+    to_learn = data.to_dict(orient="records")
+
+
+# -- right button func --
+
+def right():
+    to_learn.remove(current_card)
+    pandas.DataFrame.from_records(to_learn).to_csv("data/words_to_learn.csv", index=False)
+    next_card()
 
 # -- next card func --
 after_id = None
@@ -53,10 +66,9 @@ wrong_button = Button(image=wrong_button_img, highlightthickness=0, command=next
 wrong_button.grid(row=1, column=0)
 
 right_button_img = PhotoImage(file="images/right.png")
-right_button = Button(image=right_button_img, highlightthickness=0, command=next_card)
+right_button = Button(image=right_button_img, highlightthickness=0, command=right)
 right_button.grid(row=1, column=1)
 
 next_card()
-# window.after(3000, waithere)
 
 window.mainloop()
