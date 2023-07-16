@@ -3,30 +3,33 @@ import pandas
 import random
 
 BACKGROUND_COLOR = "#B1DDC6"
-after_id = None
+
 # --reding csv--
 data = pandas.read_csv("data/french_words.csv")
 to_learn = data.to_dict(orient="records")
 
+# -- next card func --
+after_id = None
+current_card = {}
 
-# -- wrong button func --
+
 def next_card():
     global current_card, after_id
     if after_id:
         window.after_cancel(after_id)
-
     current_card = random.choice(to_learn)
     canvas.itemconfig(card_front, image=card_front_img)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_card["French"], fill="black")
+    after_id = window.after(3000, flip_card)
 
-    after_id = window.after(3000, flip)
 
-
-def flip():
+# -- flip card func --
+def flip_card():
     canvas.itemconfig(card_front, image=card_back_img)
     canvas.itemconfig(card_title, text="English", fill="white")
     canvas.itemconfig(card_word, text=current_card["English"], fill="white")
+
 
 # window.after_cancel(task)
 
