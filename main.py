@@ -18,7 +18,7 @@ finally:
 
 # -- right button func --
 
-def right():
+def known():
     to_learn.remove(current_card)
     pandas.DataFrame.from_records(to_learn).to_csv("data/words_to_learn.csv", index=False)
     next_card()
@@ -61,11 +61,9 @@ window.title("Flashy")
 window.config(bg=BACKGROUND_COLOR, padx=50, pady=50)
 
 canvas = Canvas(window, width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
-
 card_back_img = PhotoImage(file="images/card_back.png")
 card_front_img = PhotoImage(file="images/card_front.png")
 card_front = canvas.create_image(400, 263, image=card_front_img)
-
 card_title = canvas.create_text(400, 150, text="", font=("Ariel", 40, "italic"))
 card_word = canvas.create_text(400, 263, text="", font=("Ariel", 60, "bold"))
 canvas.grid(row=0, column=0, columnspan=2)
@@ -75,9 +73,8 @@ wrong_button = Button(image=wrong_button_img, highlightthickness=0, command=next
 wrong_button.grid(row=1, column=0)
 
 right_button_img = PhotoImage(file="images/right.png")
-right_button = Button(image=right_button_img, highlightthickness=0, command=right)
+right_button = Button(image=right_button_img, highlightthickness=0, command=known)
 right_button.grid(row=1, column=1)
 
 next_card()
-
 window.mainloop()
